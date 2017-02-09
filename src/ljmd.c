@@ -1,4 +1,4 @@
-/* 
+/*
  * simple lennard-jones potential MD code with velocity verlet.
  * units: Length=Angstrom, Mass=amu; Energy=kcal
  *
@@ -20,6 +20,7 @@ const double mvsq2e=2390.05736153349; /* m*v^2 in kcal/mol */
 
 #include "mdsys_t.h"
 #include "helpers.h"
+#include "force.h"
 
 /* helper function: read a line and then return
    the first string with whitespace stripped off */
@@ -53,7 +54,7 @@ static int get_a_line(FILE *fp, char *buf)
 
 /* compute kinetic energy */
 static void ekin(mdsys_t *sys)
-{   
+{
     int i;
 
     sys->ekin=0.0;
@@ -61,47 +62,6 @@ static void ekin(mdsys_t *sys)
         sys->ekin += 0.5*mvsq2e*sys->mass*(sys->vx[i]*sys->vx[i] + sys->vy[i]*sys->vy[i] + sys->vz[i]*sys->vz[i]);
     }
     sys->temp = 2.0*sys->ekin/(3.0*sys->natoms-3.0)/kboltz;
-}
-
-/* compute forces */
-static void force(mdsys_t *sys) 
-{
-    double r,ffac;
-    double rx,ry,rz;
-    int i,j;
-
-    /* zero energy and forces */
-    sys->epot=0.0;
-    azzero(sys->fx,sys->natoms);
-    azzero(sys->fy,sys->natoms);
-    azzero(sys->fz,sys->natoms);
-
-    for(i=0; i < (sys->natoms); ++i) {
-        for(j=0; j < (sys->natoms); ++j) {
-
-            /* particles have no interactions with themselves */
-            if (i==j) continue;
-            
-            /* get distance between particle i and j */
-            rx=pbc(sys->rx[i] - sys->rx[j], 0.5*sys->box);
-            ry=pbc(sys->ry[i] - sys->ry[j], 0.5*sys->box);
-            rz=pbc(sys->rz[i] - sys->rz[j], 0.5*sys->box);
-            r = sqrt(rx*rx + ry*ry + rz*rz);
-      
-            /* compute force and energy if within cutoff */
-            if (r < sys->rcut) {
-                ffac = -4.0*sys->epsilon*(-12.0*pow(sys->sigma/r,12.0)/r
-                                         +6*pow(sys->sigma/r,6.0)/r);
-                
-                sys->epot += 0.5*4.0*sys->epsilon*(pow(sys->sigma/r,12.0)
-                                               -pow(sys->sigma/r,6.0));
-
-                sys->fx[i] += rx/r*ffac;
-                sys->fy[i] += ry/r*ffac;
-                sys->fz[i] += rz/r*ffac;
-            }
-        }
-    }
 }
 
 /* velocity verlet */
@@ -134,7 +94,7 @@ static void velverlet(mdsys_t *sys)
 static void output(mdsys_t *sys, FILE *erg, FILE *traj)
 {
     int i;
-    
+
     printf("% 8d % 20.8f % 20.8f % 20.8f % 20.8f\n", sys->nfi, sys->temp, sys->ekin, sys->epot, sys->ekin+sys->epot);
     fprintf(erg,"% 8d % 20.8f % 20.8f % 20.8f % 20.8f\n", sys->nfi, sys->temp, sys->ekin, sys->epot, sys->ekin+sys->epot);
     fprintf(traj,"%d\n nfi=%d etot=%20.8f\n", sys->natoms, sys->nfi, sys->ekin+sys->epot);
@@ -145,7 +105,7 @@ static void output(mdsys_t *sys, FILE *erg, FILE *traj)
 
 
 /* main */
-int main(int argc, char **argv) 
+int main(int argc, char **argv)
 {
     int nprint, i;
     char restfile[BLEN], trajfile[BLEN], ergfile[BLEN], line[BLEN];
@@ -208,7 +168,7 @@ int main(int argc, char **argv)
     sys.nfi=0;
     force(&sys);
     ekin(&sys);
-    
+
     erg=fopen(ergfile,"w");
     traj=fopen(trajfile,"w");
 
