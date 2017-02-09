@@ -30,6 +30,10 @@ clean:
 ../test_input.x: ../tests/test_input.c mdsys_t.o input.o helpers.o
 	$(CC) -I$(IPATH) -o $@ $(CFLAGS) $^ $(LDLIBS) 
 
+../test_verlet.x: ../tests/test_verlet.c mdsys_t.o verlet_time_integration.o force.o helpers.o
+	$(CC) -I$(IPATH) -o $@ $(CFLAGS) $^ $(LDLIBS) 
+
+
 # compilation pattern rule for objects
 %.o: $(SPATH)%.c
 	$(CC) -I$(IPATH) -c $(CFLAGS) $<
