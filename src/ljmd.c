@@ -21,6 +21,7 @@ const double mvsq2e=2390.05736153349; /* m*v^2 in kcal/mol */
 #include "mdsys_t.h"
 #include "helpers.h"
 #include "force.h"
+#include "verlet_time_integration.h"
 
 /* helper function: read a line and then return
    the first string with whitespace stripped off */
@@ -62,32 +63,6 @@ static void ekin(mdsys_t *sys)
         sys->ekin += 0.5*mvsq2e*sys->mass*(sys->vx[i]*sys->vx[i] + sys->vy[i]*sys->vy[i] + sys->vz[i]*sys->vz[i]);
     }
     sys->temp = 2.0*sys->ekin/(3.0*sys->natoms-3.0)/kboltz;
-}
-
-/* velocity verlet */
-static void velverlet(mdsys_t *sys)
-{
-    int i;
-
-    /* first part: propagate velocities by half and positions by full step */
-    for (i=0; i<sys->natoms; ++i) {
-        sys->vx[i] += 0.5*sys->dt / mvsq2e * sys->fx[i] / sys->mass;
-        sys->vy[i] += 0.5*sys->dt / mvsq2e * sys->fy[i] / sys->mass;
-        sys->vz[i] += 0.5*sys->dt / mvsq2e * sys->fz[i] / sys->mass;
-        sys->rx[i] += sys->dt*sys->vx[i];
-        sys->ry[i] += sys->dt*sys->vy[i];
-        sys->rz[i] += sys->dt*sys->vz[i];
-    }
-
-    /* compute forces and potential energy */
-    force(sys);
-
-    /* second part: propagate velocities by another half step */
-    for (i=0; i<sys->natoms; ++i) {
-        sys->vx[i] += 0.5*sys->dt / mvsq2e * sys->fx[i] / sys->mass;
-        sys->vy[i] += 0.5*sys->dt / mvsq2e * sys->fy[i] / sys->mass;
-        sys->vz[i] += 0.5*sys->dt / mvsq2e * sys->fz[i] / sys->mass;
-    }
 }
 
 /* append data to output. */
