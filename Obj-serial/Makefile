@@ -7,6 +7,7 @@ LDLIBS=-lm
 # list of source files
 SRC = ljmd.c helpers.c force.c verlet_time_integration.c input.c output.c mdsys_t.c
 SPATH=../src/
+IPATH=../include/
 OBJ=$(SRC:%.c=%.o)
 
 default: ../ljmd-serial.x
@@ -16,9 +17,9 @@ clean:
 
 # linker rule
 ../ljmd-serial.x: $(OBJ)
-	$(CC) -o $@ $(CFLAGS) $^ $(LDLIBS)
+	$(CC) -I$(IPATH) -o $@ $(CFLAGS) $^ $(LDLIBS)
 
 # compilation pattern rule for objects
 %.o: $(SPATH)%.c
-	$(CC) -c $(CFLAGS) $<
+	$(CC) -I$(IPATH) -c $(CFLAGS) $<
 
