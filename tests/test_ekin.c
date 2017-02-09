@@ -33,7 +33,7 @@ int main(){
   double expected_ekin = 170.0*mvsq2e; /* 1/2*mass*mvsq2e*(v[0]^2 + v[1]^2) */
 
   ekin( &sys );
-  printf("Ekin = %f . Expected ekin = %f\n",sys.ekin, expected_ekin);
+  printf("Ekin = %f \nExpected ekin = %f\n",sys.ekin, expected_ekin);
 
   free_mdsys_mem( &sys );
 

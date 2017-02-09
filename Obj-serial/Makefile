@@ -13,7 +13,7 @@ OBJ=$(SRC:%.c=%.o)
 default: ../ljmd-serial.x
 
 clean:
-	rm -f *.o ../ljmd-serial.x ../test_input.x 
+	rm -f *.o ../*.x 
 
 # linker rule
 ../ljmd-serial.x: $(OBJ)
@@ -23,6 +23,12 @@ clean:
 # tests
 ../test_input.x:  mdsys_t.o input.o helpers.o
 	$(CC) -I$(IPATH) -o $@ $(CFLAGS) $^ $(LDLIBS) ../tests/test_input.c
+
+../test_ekin.x:  mdsys_t.o
+	$(CC) -I$(IPATH) -o $@ $(CFLAGS) $^ $(LDLIBS) ../tests/test_ekin.c
+
+../test_force.x:  mdsys_t.o force.o helpers.o
+	$(CC) -I$(IPATH) -o $@ $(CFLAGS) $^ $(LDLIBS) ../tests/test_force.c
 
 
 # compilation pattern rule for objects
