@@ -21,9 +21,8 @@ clean:
 
 
 # tests
-../test_input.x:  mdsys_t.o input.o helpers.o
-	$(CC) -I$(IPATH) -o $@ $(CFLAGS) $^ $(LDLIBS) ../tests/test_input.c
-
+../test_input.x: ../tests/test_input.c mdsys_t.o input.o helpers.o
+	$(CC) -I$(IPATH) -o $@ $(CFLAGS) $^ $(LDLIBS) 
 
 # compilation pattern rule for objects
 %.o: $(SPATH)%.c
