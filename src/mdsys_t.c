@@ -1,8 +1,8 @@
 #include "mdsys_t.h"
 #include <stdlib.h>
 
-extern const double mvsq2e;
-extern const double kboltz;
+//extern const double mvsq2e;
+//extern const double kboltz;
 
 /* compute kinetic energy */
 void ekin(mdsys_t *sys)

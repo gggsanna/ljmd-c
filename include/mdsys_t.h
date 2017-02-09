@@ -1,6 +1,8 @@
 #ifndef __MDSYS_T_H__
 #define __MDSYS_T_H__
 
+#include "param.h"
+
 /* structure to hold the complete information 
  * about the MD system */
 struct _mdsys {

@@ -2,7 +2,7 @@
 #include "force.h"
 #include "verlet_time_integration.h"
 
-extern const double mvsq2e;
+//extern const double mvsq2e;
 
 /* velocity verlet */
 void velverlet(mdsys_t *sys)
