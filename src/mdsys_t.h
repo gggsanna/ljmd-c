@@ -13,6 +13,10 @@ struct _mdsys {
 };
 typedef struct _mdsys mdsys_t;
 
+/* memory management functions */
+void allocate_mdsys_mem(mdsys_t *sys);
+void free_mdsys_mem(mdsys_t *sys);
+
 #endif
 
 
