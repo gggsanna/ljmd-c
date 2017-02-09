@@ -4,7 +4,7 @@ CC=gcc
 CFLAGS=-Wall -g -O3 -ffast-math -fomit-frame-pointer
 LDLIBS=-lm
 
-# list of source files
+# list of source files for ljmd-serial
 SRC = ljmd.c helpers.c force.c verlet_time_integration.c input.c output.c mdsys_t.c
 SPATH=../src/
 IPATH=../include/
@@ -13,11 +13,17 @@ OBJ=$(SRC:%.c=%.o)
 default: ../ljmd-serial.x
 
 clean:
-	rm -f *.mod *.o ../ljmd-serial.x
+	rm -f *.o ../ljmd-serial.x ../test_input.x 
 
 # linker rule
 ../ljmd-serial.x: $(OBJ)
 	$(CC) -I$(IPATH) -o $@ $(CFLAGS) $^ $(LDLIBS)
+
+
+# tests
+../test_input.x:  mdsys_t.o input.o helpers.o
+	$(CC) -I$(IPATH) -o $@ $(CFLAGS) $^ $(LDLIBS) ../tests/test_input.c
+
 
 # compilation pattern rule for objects
 %.o: $(SPATH)%.c
