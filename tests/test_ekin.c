@@ -1,5 +1,4 @@
 #include <stdio.h>
-
 #include "mdsys_t.h"
 
 int main(){
@@ -31,7 +30,7 @@ int main(){
   sys.vy[1]=4.0;
   sys.vz[1]=0.0;
 
-  double expected_ekin = 170.0; /* 1/2*mass*(v[0]^2 + v[1]^2) */
+  double expected_ekin = 170.0*mvsq2e; /* 1/2*mass*mvsq2e*(v[0]^2 + v[1]^2) */
 
   ekin( &sys );
   printf("Ekin = %f . Expected ekin = %f\n",sys.ekin, expected_ekin);
