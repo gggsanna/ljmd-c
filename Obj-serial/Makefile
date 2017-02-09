@@ -21,15 +21,14 @@ clean:
 
 
 # tests
-../test_input.x:  mdsys_t.o input.o helpers.o
-	$(CC) -I$(IPATH) -o $@ $(CFLAGS) $^ $(LDLIBS) ../tests/test_input.c
+../test_ekin.x:  ../tests/test_ekin.c mdsys_t.o
+	$(CC) -I$(IPATH) -o $@ $(CFLAGS) $^ $(LDLIBS) 
 
-../test_ekin.x:  mdsys_t.o
-	$(CC) -I$(IPATH) -o $@ $(CFLAGS) $^ $(LDLIBS) ../tests/test_ekin.c
+../test_force.x: ../tests/test_force.c mdsys_t.o force.o helpers.o
+	$(CC) -I$(IPATH) -o $@ $(CFLAGS) $^ $(LDLIBS) 
 
-../test_force.x:  mdsys_t.o force.o helpers.o
-	$(CC) -I$(IPATH) -o $@ $(CFLAGS) $^ $(LDLIBS) ../tests/test_force.c
-
+../test_input.x: ../tests/test_input.c mdsys_t.o input.o helpers.o
+	$(CC) -I$(IPATH) -o $@ $(CFLAGS) $^ $(LDLIBS) 
 
 # compilation pattern rule for objects
 %.o: $(SPATH)%.c
