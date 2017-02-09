@@ -17,6 +17,9 @@ typedef struct _mdsys mdsys_t;
 void allocate_mdsys_mem(mdsys_t *sys);
 void free_mdsys_mem(mdsys_t *sys);
 
+/* physical quantity computation */
+void ekin(mdsys_t *sys);
+
 #endif
 
 
