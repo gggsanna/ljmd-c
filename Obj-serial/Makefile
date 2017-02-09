@@ -5,7 +5,7 @@ CFLAGS=-Wall -g -O3 -ffast-math -fomit-frame-pointer
 LDLIBS=-lm
 
 # list of source files
-SRC = ljmd.c helpers.c force.c verlet_time_integration.c
+SRC = ljmd.c helpers.c force.c verlet_time_integration.c input.c mdsys_t.c
 SPATH=../src/
 OBJ=$(SRC:%.c=%.o)
 
