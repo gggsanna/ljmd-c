@@ -38,7 +38,7 @@ int main(){
   double expected_fz=0;
 
   force(&sys);
-  printf("force( &sys) \t= %f %f %f \nExpected force \t= %f\t 0\t 0 \n",
+  printf("force( &sys) \t= %f %f %f \nExpected force \t= %f 0 0 \n",
     sys.fx[0] , sys.fy[0] , sys.fz[0] , expected_fx);
 
   sys.rx[0]=0.0;
