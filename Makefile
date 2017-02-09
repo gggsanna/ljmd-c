@@ -1,9 +1,5 @@
 # -*- Makefile -*-
 SHELL=/bin/sh
-############################################
-# derived makefile variables
-OBJ_SERIAL=$(SRC:src/%.f90=Obj-serial/%.o)
-############################################
 
 default: serial
 
