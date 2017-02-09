@@ -2,14 +2,17 @@
  * simple lennard-jones potential MD code with velocity verlet.
  * units: Length=Angstrom, Mass=amu; Energy=kcal
  *
- * baseline c version.
+ * refactored c version.
  */
 
 #include <stdio.h>
-#include <string.h>
-#include <ctype.h>
-#include <stdlib.h>
-#include <math.h>
+
+#include "mdsys_t.h"
+#include "helpers.h"
+#include "force.h"
+#include "verlet_time_integration.h"
+#include "input.h"
+#include "output.h"
 
 /* generic file- or pathname buffer length */
 #define BLEN 200
@@ -17,26 +20,6 @@
 /* a few physical constants */
 const double kboltz=0.0019872067;     /* boltzman constant in kcal/mol/K */
 const double mvsq2e=2390.05736153349; /* m*v^2 in kcal/mol */
-
-#include "mdsys_t.h"
-#include "helpers.h"
-#include "force.h"
-#include "verlet_time_integration.h"
-#include "input.h"
-
-
-/* append data to output. */
-static void output(mdsys_t *sys, FILE *erg, FILE *traj)
-{
-    int i;
-
-    printf("% 8d % 20.8f % 20.8f % 20.8f % 20.8f\n", sys->nfi, sys->temp, sys->ekin, sys->epot, sys->ekin+sys->epot);
-    fprintf(erg,"% 8d % 20.8f % 20.8f % 20.8f % 20.8f\n", sys->nfi, sys->temp, sys->ekin, sys->epot, sys->ekin+sys->epot);
-    fprintf(traj,"%d\n nfi=%d etot=%20.8f\n", sys->natoms, sys->nfi, sys->ekin+sys->epot);
-    for (i=0; i<sys->natoms; ++i) {
-        fprintf(traj, "Ar  %20.8f %20.8f %20.8f\n", sys->rx[i], sys->ry[i], sys->rz[i]);
-    }
-}
 
 
 /* main */
@@ -49,13 +32,9 @@ int main(int argc, char **argv)
 
     get_mdsys_stdin(&sys, restfile, trajfile, ergfile, &nprint);
 
-
     allocate_mdsys_mem(&sys);
 
-
-    /* read restart */
     get_rest_file(restfile, &sys);
-
 
     /* initialize forces and energies.*/
     sys.nfi=0;
@@ -92,3 +71,4 @@ int main(int argc, char **argv)
 
     return 0;
 }
+
