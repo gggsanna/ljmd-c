@@ -3,7 +3,7 @@
 
 #include "param.h"
 
-/* structure to hold the complete information 
+/* structure to hold the complete information
  * about the MD system */
 struct _mdsys {
     int natoms,nfi,nsteps;
@@ -12,6 +12,7 @@ struct _mdsys {
     double *rx, *ry, *rz;
     double *vx, *vy, *vz;
     double *fx, *fy, *fz;
+    void (*force)(struct _mdsys *);
 };
 typedef struct _mdsys mdsys_t;
 
@@ -23,5 +24,3 @@ void free_mdsys_mem(mdsys_t *sys);
 void ekin(mdsys_t *sys);
 
 #endif
-
-

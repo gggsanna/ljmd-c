@@ -25,8 +25,8 @@ int main(int argc, char **argv)
     FILE *traj,*erg;
     mdsys_t sys;
 
-    void (*force)( mdsys_t *);
-    force = &force_Newton_3rd;
+    //void (*force)( mdsys_t *);
+    sys.force = &force_Newton_3rd;
 
     if( get_mdsys_stdin(&sys, restfile, trajfile, ergfile, &nprint) != 0 )
     {
@@ -41,7 +41,7 @@ int main(int argc, char **argv)
 
     /* initialize forces and energies.*/
     sys.nfi=0;
-    force(&sys);
+    sys.force(&sys);
     ekin(&sys);
 
     erg=fopen(ergfile,"w");
@@ -60,7 +60,7 @@ int main(int argc, char **argv)
             output(&sys, erg, traj);
 
         /* propagate system and recompute energies */
-        velverlet(&sys, force);
+        velverlet(&sys);
         ekin(&sys);
     }
     /**************************************************/
