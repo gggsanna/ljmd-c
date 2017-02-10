@@ -17,8 +17,9 @@ void velverlet(mdsys_t *sys )
 void propagate_velocity_half_step(mdsys_t *sys)
 {
     /* precompute a common factor which appears in the for loop */
-    double fcoeff = 0.5*sys->dt / mvsq2e / sys->mass;
+    const double fcoeff = 0.5*sys->dt / mvsq2e / sys->mass;
     int i;
+    #pragma omp parallel for 
     for (i=0; i<sys->natoms; ++i) {
         sys->vx[i] += fcoeff * sys->fx[i];
         sys->vy[i] += fcoeff * sys->fy[i];
@@ -30,6 +31,7 @@ void propagate_velocity_half_step(mdsys_t *sys)
 void propagate_position(mdsys_t *sys)
 {
     int i;
+    #pragma omp parallel for
     for (i=0; i<sys->natoms; ++i) {
         sys->rx[i] += sys->dt*sys->vx[i];
         sys->ry[i] += sys->dt*sys->vy[i];
