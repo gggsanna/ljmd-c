@@ -12,12 +12,17 @@ To compile the OpenMP-parallelized code: "make OMP".
 
 To run the executable (ljmd-serial.x or ljmd-OMP.x): "../ljmd-ZZZ < <input_file>".
 You can provide an integer "n" as optional argument "../ljmd-ZZZ.x <n> < <input_file>": this will select a different implementation of the force function according to the following list.
-n | force
-0 : force_Old, the original function
-1 : force_OpenMP, avoid costly math operations + OpenMP
-2 : force_Newton_3rd, avoid costly math operations + only compute once per pairs
-3 : force_Morse, use Morse potential instead of Lennard-Jones
-other values all default to force_Newton_3rd
+
+
+ n | force
+---|---
+ 0 | force_Old, the original function
+ 1 | force_OpenMP, avoid costly math operations + OpenMP
+ 2 | force_Newton_3rd, avoid costly math operations + only compute once per pairs
+ 3 | force_Morse, use Morse potential instead of Lennard-Jones
+
+all other values default to force_Newton_3rd
+
 
 To compile and run all the unit tests: "make test_serial" or "make test_OMP".
 See the makefile for more specific test targets.
@@ -31,4 +36,10 @@ In the force_Newton_3rd implementation of the force function, the force is compu
 
 The profiling was done with gprof on the cluster cosilt.
 
-## OpenMP optimization
+## OpenMP optimization 
+
+![time](OMPtime.png)
+
+![scal](OMPspeedup.png)
+
+
