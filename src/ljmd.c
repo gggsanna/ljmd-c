@@ -25,11 +25,16 @@ int main(int argc, char **argv)
     FILE *traj,*erg;
     mdsys_t sys;
 
-    get_mdsys_stdin(&sys, restfile, trajfile, ergfile, &nprint);
+    if( get_mdsys_stdin(&sys, restfile, trajfile, ergfile, &nprint) != 0 )
+    {
+      perror("error in stdin");
+      return 1;
+    }
 
     allocate_mdsys_mem(&sys);
 
-    get_rest_file(restfile, &sys);
+    if( get_rest_file(restfile, &sys) != 0 )
+      return 3;
 
     /* initialize forces and energies.*/
     sys.nfi=0;
