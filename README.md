@@ -34,7 +34,7 @@ In the force_Newton_3rd implementation of the force function, the force is compu
 
 ### Serial profiling
 
-The profiling was done with gprof on the cluster cosilt.
+The profiling was done with `gprof` on the cluster cosilt, running `ljmd-serial.x` with input `argon_2916.inp`.
 
 Output of the original (refactored) code:
 ```
@@ -62,7 +62,7 @@ Each sample counts as 0.01 seconds.
   0.00     62.32     0.00      101     0.00     0.00  output
 ```
 
-The profiling shows that the next step should be hardcoding pbc inside the force function.
+The profiling suggests that the next step should be hardcoding `pbc` inside the force function.
 
 ## OpenMP optimization
 
