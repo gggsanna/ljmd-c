@@ -3,6 +3,7 @@
 
 #include "mdsys_t.h"
 
-void force(mdsys_t *sys);
+void force_Newton_3rd(mdsys_t *sys);
+void force_OpenMP(mdsys_t *sys);
 
 #endif

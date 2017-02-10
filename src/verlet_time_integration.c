@@ -5,7 +5,7 @@
 //extern const double mvsq2e;
 
 /* velocity verlet */
-void velverlet(mdsys_t *sys)
+void velverlet(mdsys_t *sys, void (*force)(mdsys_t *) )
 {
     propagate_velocity_half_step(sys);
     propagate_position(sys);

@@ -25,6 +25,9 @@ int main(int argc, char **argv)
     FILE *traj,*erg;
     mdsys_t sys;
 
+    void (*force)( mdsys_t *);
+    force = &force_Newton_3rd;
+
     if( get_mdsys_stdin(&sys, restfile, trajfile, ergfile, &nprint) != 0 )
     {
       perror("error in stdin");
@@ -57,7 +60,7 @@ int main(int argc, char **argv)
             output(&sys, erg, traj);
 
         /* propagate system and recompute energies */
-        velverlet(&sys);
+        velverlet(&sys, force);
         ekin(&sys);
     }
     /**************************************************/
@@ -71,4 +74,3 @@ int main(int argc, char **argv)
 
     return 0;
 }
-
