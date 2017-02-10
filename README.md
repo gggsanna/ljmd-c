@@ -32,11 +32,11 @@ See the makefile for more specific test targets.
 Expensive operations such as powers, exponentials, or square roots have been moved outside of loops, or avoided altogether when possible.
 In the force_Newton_3rd implementation of the force function, the force is computed for each pair of atoms instead (half as many times as in the original code).
 
-# Profiling
+### Serial profiling
 
 The profiling was done with gprof on the cluster cosilt.
 
-Output of the original code:
+Output of the original (refactored) code:
 ```
 Each sample counts as 0.01 seconds.
   %   cumulative   self              self     total           
@@ -47,12 +47,6 @@ Each sample counts as 0.01 seconds.
   0.02    181.37     0.04     1000     0.04   181.19  velverlet
   0.00    181.37     0.00     1001     0.00     0.00  ekin
   0.00    181.37     0.00      101     0.00     0.00  output
-  0.00    181.37     0.00       12     0.00     0.00  get_a_line
-  0.00    181.37     0.00        1     0.00     0.00  allocate_mdsys_mem
-  0.00    181.37     0.00        1     0.00     0.00  free_mdsys_mem
-  0.00    181.37     0.00        1     0.00     0.00  get_mdsys_stdin
-  0.00    181.37     0.00        1     0.00     3.43  get_rest_file
-  0.00    181.37     0.00        1     0.00     0.00  select_force
 ```
 
 Output of the serial optimized code:
@@ -66,12 +60,6 @@ Each sample counts as 0.01 seconds.
   0.03     62.32     0.02     1000     0.02    62.25  velverlet
   0.00     62.32     0.00     1001     0.00     0.00  ekin
   0.00     62.32     0.00      101     0.00     0.00  output
-  0.00     62.32     0.00       12     0.00     0.00  get_a_line
-  0.00     62.32     0.00        1     0.00     0.00  allocate_mdsys_mem
-  0.00     62.32     0.00        1     0.00     0.00  free_mdsys_mem
-  0.00     62.32     0.00        1     0.00     0.00  get_mdsys_stdin
-  0.00     62.32     0.00        1     0.00     0.82  get_rest_file
-  0.00     62.32     0.00        1     0.00     0.00  select_force
 ```
 
 The profiling shows that the next step should be hardcoding pbc inside the force function.
