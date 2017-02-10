@@ -119,7 +119,7 @@ void force_Morse( mdsys_t *sys){
   alpha = 0.15;
   r_e = 1.122462*sys->sigma;
   double half_box = 0.5*sys->box;
-  double twice_a_D = 2*alpha*sys->epsilon;
+  double twice_a_D = 2.0*alpha*sys->epsilon;
 
 
   /* zero energy and forces */
@@ -144,7 +144,7 @@ void force_Morse( mdsys_t *sys){
               exp_r = exp(-alpha*(r - r_e));
 
               ffac = twice_a_D*exp_r*(1 - exp_r);
-              sys->epot += sys->epsilon*exp_r*(1 - 2*exp_r);
+              sys->epot += sys->epsilon*exp_r*(exp_r - 2);
 
               sys->fx[i] += rx/r*ffac;
               sys->fy[i] += ry/r*ffac;
