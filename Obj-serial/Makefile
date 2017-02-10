@@ -5,7 +5,7 @@ CFLAGS=-Wall -g -O3 -ffast-math -fomit-frame-pointer
 LDLIBS=-lm
 
 # list of source files for ljmd-serial
-SRC = ljmd.c helpers.c force.c verlet_time_integration.c input.c output.c mdsys_t.c
+SRC = ljmd.c helpers.c force.c verlet_time_integration.c input.c output.c mdsys_t.c select_force.c
 SPATH=../src/
 IPATH=../include/
 OBJ=$(SRC:%.c=%.o)
