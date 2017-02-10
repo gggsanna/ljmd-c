@@ -143,8 +143,8 @@ void force_Morse( mdsys_t *sys){
           if (r < sys->rcut) {
               exp_r = exp(-alpha*(r - r_e));
 
-              ffac = twice_a_D*exp_r*(1 - exp_r);
-              sys->epot += sys->epsilon*exp_r*(exp_r - 2);
+              ffac = twice_a_D*exp_r*(1.0 - exp_r);
+              sys->epot += sys->epsilon*exp_r*(exp_r - 2.0);
 
               sys->fx[i] += rx/r*ffac;
               sys->fy[i] += ry/r*ffac;
