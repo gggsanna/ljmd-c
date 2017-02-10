@@ -28,7 +28,10 @@ int main(int argc, char **argv)
 #ifdef _OPENMP
     sys.force = &force_OpenMP;
 #else
-    sys.force = &force_Newton_3rd;
+    /* find a better way to setup the force */
+    sys.force = &force_Morse;
+
+//    sys.force = &force_Newton_3rd;
 #endif
 
     if( get_mdsys_stdin(&sys, restfile, trajfile, ergfile, &nprint) != 0 )
