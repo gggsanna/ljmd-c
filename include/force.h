@@ -6,5 +6,6 @@
 void force_Newton_3rd( mdsys_t * );
 void force_OpenMP( mdsys_t * );
 void force_Morse( mdsys_t * );
+void force_Old( mdsys_t * );
 
 #endif
