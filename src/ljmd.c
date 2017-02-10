@@ -13,6 +13,7 @@
 #include "verlet_time_integration.h"
 #include "input.h"
 #include "output.h"
+#include "select_force.h"
 
 /* generic file- or pathname buffer length */
 #define BLEN 200
@@ -20,19 +21,14 @@
 /* main */
 int main(int argc, char **argv)
 {
-    int nprint;
+    int nprint, force_id;
     char restfile[BLEN], trajfile[BLEN], ergfile[BLEN];
     FILE *traj,*erg;
     mdsys_t sys;
 
-#ifdef _OPENMP
-    sys.force = &force_OpenMP;
-#else
-    /* find a better way to setup the force */
-    sys.force = &force_Morse;
-
-//    sys.force = &force_Newton_3rd;
-#endif
+    force_id=-1;
+    if(argc > 1) force_id=atoi(argv[1]);
+    select_force( &sys, force_id);
 
     if( get_mdsys_stdin(&sys, restfile, trajfile, ergfile, &nprint) != 0 )
     {

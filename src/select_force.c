@@ -16,7 +16,7 @@ void select_force( mdsys_t * sys, int force_id){
   return;
 #endif
   if(force_id==0)
-    sys->force=&force_Old
+    sys->force=&force_Old;
   else if(force_id==1)
     sys->force=&force_OpenMP;
   else if(force_id==2)
