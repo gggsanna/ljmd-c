@@ -19,11 +19,12 @@ clean:
 ../ljmd-OMP.x: $(OBJ)
 	$(CC) -I$(IPATH) -o $@ $(CFLAGS) $^ $(LDLIBS)
 
+tests:  ../test_force-OMP.x ../test_verlet-OMP.x
+	../test_force-OMP.x 
+	../test_verlet-OMP.x 
+
 
 # tests
-../test_ekin-OMP.x:  ../tests/test_ekin.c mdsys_t.o
-	$(CC) -I$(IPATH) -o $@ $(CFLAGS) $^ $(LDLIBS) 
-
 ../test_force-OMP.x: ../tests/test_force.c mdsys_t.o force.o helpers.o
 	$(CC) -I$(IPATH) -o $@ $(CFLAGS) $^ $(LDLIBS) 
 
