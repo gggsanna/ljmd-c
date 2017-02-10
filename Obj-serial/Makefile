@@ -21,6 +21,12 @@ clean:
 
 
 # tests
+tests: ../test_ekin.x ../test_force.x ../test_input.x ../test_verlet.x
+	../test_ekin.x 
+	../test_force.x 
+	../test_input.x < ../examples/argon_108.inp | diff - ../examples/argon_108.inp -y -b 
+	../test_verlet.x 
+
 ../test_ekin.x:  ../tests/test_ekin.c mdsys_t.o
 	$(CC) -I$(IPATH) -o $@ $(CFLAGS) $^ $(LDLIBS) 
 

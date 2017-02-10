@@ -37,9 +37,17 @@ int main(){
   double expected_fy=0;
   double expected_fz=0;
 
-  force(&sys);
-  printf("force( &sys) \t= %f %f %f \nExpected force \t= %f 0 0 \n",
+  sys.force=&force_Newton_3rd;
+  sys.force(&sys);
+  printf("force_Newton \t= %f %f %f \nExpected force \t= %f 0 0 \n",
     sys.fx[0] , sys.fy[0] , sys.fz[0] , expected_fx);
+
+  sys.force=&force_OpenMP;
+  sys.force(&sys);
+  printf("force_OpenMP \t= %f %f %f \nExpected force \t= %f 0 0 \n",
+    sys.fx[0] , sys.fy[0] , sys.fz[0] , expected_fx);
+
+
 
   sys.rx[0]=0.0;
   sys.ry[0]=-1.0;
@@ -47,9 +55,17 @@ int main(){
   expected_fx=0;
   expected_fy=-2.7726925774361321e7;
 
-  force(&sys);
-  printf("force( &sys) \t= %f %f %f \nExpected force \t= 0 %f 0 \n",
+  sys.force=&force_Newton_3rd;
+  sys.force(&sys);
+  printf("force_Newton \t= %f %f %f \nExpected force \t= 0 %f 0 \n",
     sys.fx[0] , sys.fy[0] , sys.fz[0] , expected_fy);
+
+  sys.force=&force_OpenMP;
+  sys.force(&sys);
+  printf("force_OpenMP \t= %f %f %f \nExpected force \t= 0 %f 0 \n",
+    sys.fx[0] , sys.fy[0] , sys.fz[0] , expected_fy);
+
+
 
   sys.ry[0]=0.0;
   sys.rz[0]=1.0;
@@ -57,8 +73,14 @@ int main(){
   expected_fy=0;
   expected_fz=2.7726925774361321e7;
 
-  force(&sys);
-  printf("force( &sys) \t= %f %f %f \nExpected force \t= 0 0 %f \n",
+  sys.force=&force_Newton_3rd;
+  sys.force(&sys);
+  printf("force_Newton \t= %f %f %f \nExpected force \t= 0 0 %f \n",
+    sys.fx[0] , sys.fy[0] , sys.fz[0] , expected_fz);
+
+  sys.force=&force_OpenMP;
+  sys.force(&sys);
+  printf("force_OpenMP \t= %f %f %f \nExpected force \t= 0 0 %f \n",
     sys.fx[0] , sys.fy[0] , sys.fz[0] , expected_fz);
 
   sys.rx[0]=5.0;
@@ -71,8 +93,14 @@ int main(){
 
   expected_fz=0;
 
-  force(&sys);
-  printf("force( &sys) \t= %f %f %f \nExpected force \t= 0 0 0 (distance greater than cutoff) \n",
+  sys.force=&force_Newton_3rd;
+  sys.force(&sys);
+  printf("force_Newton \t= %f %f %f \nExpected force \t= 0 0 0 (distance greater than cutoff) \n",
+    sys.fx[0] , sys.fy[0] , sys.fz[0]);
+
+  sys.force=&force_Newton_3rd;
+  sys.force(&sys);
+  printf("force_OpenMP \t= %f %f %f \nExpected force \t= 0 0 0 (distance greater than cutoff) \n",
     sys.fx[0] , sys.fy[0] , sys.fz[0]);
 
 
