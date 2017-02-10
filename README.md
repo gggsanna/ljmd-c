@@ -36,10 +36,48 @@ In the force_Newton_3rd implementation of the force function, the force is compu
 
 The profiling was done with gprof on the cluster cosilt.
 
-## OpenMP optimization 
+Output of the original code:
+```
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls  ms/call  ms/call  name    
+ 69.99    126.79   126.79     1001   126.66   181.15  force_Old
+ 28.22    177.90    51.11 12641018532     0.00     0.00  pbc
+  1.90    181.33     3.43     3006     1.14     1.14  azzero
+  0.02    181.37     0.04     1000     0.04   181.19  velverlet
+  0.00    181.37     0.00     1001     0.00     0.00  ekin
+  0.00    181.37     0.00      101     0.00     0.00  output
+  0.00    181.37     0.00       12     0.00     0.00  get_a_line
+  0.00    181.37     0.00        1     0.00     0.00  allocate_mdsys_mem
+  0.00    181.37     0.00        1     0.00     0.00  free_mdsys_mem
+  0.00    181.37     0.00        1     0.00     0.00  get_mdsys_stdin
+  0.00    181.37     0.00        1     0.00     3.43  get_rest_file
+  0.00    181.37     0.00        1     0.00     0.00  select_force
+```
+
+Output of the serial optimized code:
+```
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls  ms/call  ms/call  name    
+ 55.55     34.57    34.57     1001    34.54    62.23  force_Newton_3rd
+ 43.22     61.48    26.90 12762960210     0.00     0.00  pbc
+  1.32     62.30     0.82     3006     0.27     0.27  azzero
+  0.03     62.32     0.02     1000     0.02    62.25  velverlet
+  0.00     62.32     0.00     1001     0.00     0.00  ekin
+  0.00     62.32     0.00      101     0.00     0.00  output
+  0.00     62.32     0.00       12     0.00     0.00  get_a_line
+  0.00     62.32     0.00        1     0.00     0.00  allocate_mdsys_mem
+  0.00     62.32     0.00        1     0.00     0.00  free_mdsys_mem
+  0.00     62.32     0.00        1     0.00     0.00  get_mdsys_stdin
+  0.00     62.32     0.00        1     0.00     0.82  get_rest_file
+  0.00     62.32     0.00        1     0.00     0.00  select_force
+```
+
+The profiling shows that the next step should be hardcoding pbc inside the force function.
+
+## OpenMP optimization
 
 ![time](OMPtime.png)
 
 ![scal](OMPspeedup.png)
-
-
