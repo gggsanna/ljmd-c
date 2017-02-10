@@ -25,8 +25,11 @@ int main(int argc, char **argv)
     FILE *traj,*erg;
     mdsys_t sys;
 
-    //void (*force)( mdsys_t *);
+#ifdef _OPENMP
+    sys.force = &force_OpenMP;
+#else
     sys.force = &force_Newton_3rd;
+#endif
 
     if( get_mdsys_stdin(&sys, restfile, trajfile, ergfile, &nprint) != 0 )
     {

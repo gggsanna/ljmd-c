@@ -70,6 +70,9 @@ void force_OpenMP(mdsys_t *sys)
     azzero(sys->fy,sys->natoms);
     azzero(sys->fz,sys->natoms);
 
+    double epot = 0;
+
+    #pragma omp parallel for private(j, rx, ry, rz, rsq, rinv, r6, ffac) shared(sys) reduction(+:epot)   
     for(i=0; i < (sys->natoms); ++i) {
         for(j=0; j < (sys->natoms); ++j) {
             /* particles have no interactions with themselves */
@@ -87,7 +90,7 @@ void force_OpenMP(mdsys_t *sys)
                 r6=rinv*rinv*rinv;
 
                 ffac = (12.0*c12*r6 - 6.0*c6)*r6*rinv;
-                sys->epot += r6*(c12*r6 - c6);
+                epot += 0.5*r6*(c12*r6 - c6);
 
                 sys->fx[i] += rx*ffac;
                 sys->fy[i] += ry*ffac;
@@ -95,4 +98,7 @@ void force_OpenMP(mdsys_t *sys)
             }
         }
     }
+
+  sys->epot = epot;
+
 }

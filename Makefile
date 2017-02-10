@@ -6,6 +6,10 @@ default: serial
 serial:
 	$(MAKE) $(MFLAGS) -C Obj-serial ../ljmd-serial.x
 
+OMP:
+	$(MAKE) $(MFLAGS) -C Obj-OMP ../ljmd-OMP.x
+
+
 test_input:
 	$(MAKE) $(MFLAGS) -C Obj-serial ../test_input.x
 
