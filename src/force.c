@@ -72,7 +72,7 @@ void force_OpenMP(mdsys_t *sys)
 
     double epot = 0;
 
-    #pragma omp parallel for private(j, rx, ry, rz, rsq, rinv, r6, ffac) shared(sys) reduction(+:epot)   
+    #pragma omp parallel for private(j, rx, ry, rz, rsq, rinv, r6, ffac) shared(sys) reduction(+:epot)
     for(i=0; i < (sys->natoms); ++i) {
         for(j=0; j < (sys->natoms); ++j) {
             /* particles have no interactions with themselves */
@@ -119,7 +119,7 @@ void force_Morse( mdsys_t *sys){
   alpha = 0.15;
   r_e = 1.122462*sys->sigma;
   double half_box = 0.5*sys->box;
-  double twice_a_D = 2*alpha*sys->epsilon;
+  double twice_a_D = 2.0*alpha*sys->epsilon;
 
 
   /* zero energy and forces */
@@ -143,12 +143,12 @@ void force_Morse( mdsys_t *sys){
           if (r < sys->rcut) {
               exp_r = exp(-alpha*(r - r_e));
 
-              ffac = twice_a_D*exp_r*(1 - exp_r);
-              sys->epot += sys->epsilon*exp_r*(1 - 2*exp_r);
+              ffac = twice_a_D*exp_r*(1.0 - exp_r);
+              sys->epot += sys->epsilon*exp_r*(exp_r - 2.0);
 
-              sys->fx[i] += rx*ffac;
-              sys->fy[i] += ry*ffac;
-              sys->fz[i] += rz*ffac;
+              sys->fx[i] += rx/r*ffac;
+              sys->fy[i] += ry/r*ffac;
+              sys->fz[i] += rz/r*ffac;
           }
       }
   }
