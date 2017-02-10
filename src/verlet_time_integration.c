@@ -16,11 +16,13 @@ void velverlet(mdsys_t *sys )
 /* propagate velocities by half step */
 void propagate_velocity_half_step(mdsys_t *sys)
 {
+    /* precompute a common factor which appears in the for loop */
+    double fcoeff = 0.5*sys->dt / mvsq2e / sys->mass;
     int i;
     for (i=0; i<sys->natoms; ++i) {
-        sys->vx[i] += 0.5*sys->dt / mvsq2e * sys->fx[i] / sys->mass;
-        sys->vy[i] += 0.5*sys->dt / mvsq2e * sys->fy[i] / sys->mass;
-        sys->vz[i] += 0.5*sys->dt / mvsq2e * sys->fz[i] / sys->mass;
+        sys->vx[i] += fcoeff * sys->fx[i];
+        sys->vy[i] += fcoeff * sys->fy[i];
+        sys->vz[i] += fcoeff * sys->fz[i];
     }
 }
 
