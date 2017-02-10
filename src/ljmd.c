@@ -25,8 +25,8 @@ int main(int argc, char **argv)
     FILE *traj,*erg;
     mdsys_t sys;
 
-    //void (*force)( mdsys_t *);
-    sys.force = &force_Newton_3rd;
+    /* find a better way to setup the force */
+    sys.force = &force_Morse;
 
     if( get_mdsys_stdin(&sys, restfile, trajfile, ergfile, &nprint) != 0 )
     {

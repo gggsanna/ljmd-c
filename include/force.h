@@ -3,7 +3,8 @@
 
 #include "mdsys_t.h"
 
-void force_Newton_3rd(mdsys_t *sys);
-void force_OpenMP(mdsys_t *sys);
+void force_Newton_3rd( mdsys_t * );
+void force_OpenMP( mdsys_t * );
+void force_Morse( mdsys_t * );
 
 #endif

@@ -96,3 +96,54 @@ void force_OpenMP(mdsys_t *sys)
         }
     }
 }
+
+/* D_e*( exp(-2a(r-r_e)) - 2*exp(a(r - r_e)) )
+ D_e is epsilon in lennard-jones
+ a is 0.15
+ r_e is 1.122462*sigma = 44.84
+ exp_r is exp(-a(r-r_e))
+ V(r)
+ */
+void force_Morse( mdsys_t *sys){
+  double exp_r, r_e, alpha, ffac;
+  double rx,ry,rz,r;
+  int i,j;
+
+  /* pre-compute operations whose result is used inside the loop */
+  alpha = 0.15;
+  r_e = 1.122462*sys->sigma;
+  double half_box = 0.5*sys->box;
+  double twice_a_D = 2*alpha*sys->epsilon;
+
+
+  /* zero energy and forces */
+  sys->epot=0.0;
+  azzero(sys->fx,sys->natoms);
+  azzero(sys->fy,sys->natoms);
+  azzero(sys->fz,sys->natoms);
+
+  for(i=0; i < (sys->natoms); ++i) {
+      for(j=0; j < (sys->natoms); ++j) {
+          /* particles have no interactions with themselves */
+          if (i==j) continue;
+
+          /* get distance between particle i and j */
+          rx=pbc(sys->rx[i] - sys->rx[j], half_box);
+          ry=pbc(sys->ry[i] - sys->ry[j], half_box);
+          rz=pbc(sys->rz[i] - sys->rz[j], half_box);
+          r = sqrt(rx*rx + ry*ry + rz*rz);
+
+          /* compute force and energy if within cutoff */
+          if (r < sys->rcut) {
+              exp_r = exp(-alpha*(r - r_e));
+
+              ffac = twice_a_D*exp_r*(1 - exp_r);
+              sys->epot += sys->epsilon*exp_r*(1 - 2*exp_r);
+
+              sys->fx[i] += rx*ffac;
+              sys->fy[i] += ry*ffac;
+              sys->fz[i] += rz*ffac;
+          }
+      }
+  }
+}
