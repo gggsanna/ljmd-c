@@ -46,4 +46,6 @@ int main(){
   printf("propagate_velocity_half_step:\t %f %f %f \nexpected velocity:\t\t %f %f %f\n",
     sys.vx[0], sys.vy[0], sys.vz[0], expected_vx, expected_vy, expected_vz);
 
+  return 0;
+
 }
